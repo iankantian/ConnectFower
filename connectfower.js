@@ -9,12 +9,12 @@ var black = 1;
 var red = 2;
 
 var playArea = [
-    [ 0,0,0,0,0,0,0 ],
-    [ 0,0,0,0,0,0,0 ],
-    [ 0,0,0,0,0,0,0 ],
-    [ 0,0,0,0,0,0,0 ],
-    [ 0,0,0,0,0,0,0 ],
-    [ 0,0,0,0,0,0,0 ]
+    [ 0,0,3,0,0,0,1 ],
+    [ 0,0,0,3,0,0,1 ],
+    [ 0,0,0,4,3,0,1 ],
+    [ 0,2,4,2,2,3,1 ],
+    [ 0,4,0,0,0,0,0 ],
+    [ 4,0,0,0,0,0,0 ]
 ];
 
 console.log('command to play is  takeTurn( color )');
@@ -53,6 +53,7 @@ function takeTurn( color, inputArray ){
             }
             else{
                 inputArray[ i - 1 ][ targetColumn ] = color;
+                break;
             }
         }
         else if( i == inputArray.length - 1 ){
@@ -84,19 +85,43 @@ function checkWin( inputArray ) {
             else{
                 // right
                 if( inputArray[i][j+1] == cellToCheck && inputArray[i][j+2] == cellToCheck && inputArray[i][j+3] == cellToCheck){
-                    if( j > 4 ){ // not possible to win right
+                    if( j > 3 ){ // not possible to win right
                         continue;
                     }
                     else {
-                        console.log('right win detection');
+                        console.log('right win detection', cellToCheck );
                     }
                 }
-                else{
+                // down
+                else if( inputArray[i+1][j] == cellToCheck && inputArray[i+2][j] == cellToCheck && inputArray[i+3][j] == cellToCheck ){
+                    if( i > 2 ){ // not possible to win down
+                        continue;
+                    }
+                    else{
+                        console.log('down win detection', cellToCheck );
+                    }
+                }
+                // downRight
+                else if( inputArray[i+1][j+1] == cellToCheck && inputArray[i+2][j+2] == cellToCheck && inputArray[i+3][j+3] == cellToCheck ){
+                    if( i > 2 || j > 3 ){ // not possible to win downRight
+                        continue;
+                    }
+                    else{
+                        console.log('downRight win detection ', cellToCheck );
+                    }
+                }
+                // upRight
+                else if( i > 2 || j < 4 ){
+                    if ( inputArray[i-1][j+1] == cellToCheck && inputArray[i-2][j-2] == cellToCheck && inputArray[i-3][j-3] == cellToCheck ){
+                        console.log('upRight win detection ', cellToCheck );
+                    }
+                    else{
+                    }
                 }
             }
             // left -- will be taken care of by all the checks for right.
             // up -- down will capture all of those too
-            // down
+
             // upRight
             // upLeft -- downRight will take these
             // downRight
