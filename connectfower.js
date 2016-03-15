@@ -85,7 +85,7 @@ function checkWin( inputArray ) {
                 // right
                 if( inputArray[i][j+1] == cellToCheck && inputArray[i][j+2] == cellToCheck && inputArray[i][j+3] == cellToCheck){
                     if( j > 4 ){ // not possible to win right
-                        continue
+                        continue;
                     }
                     else {
                         console.log('right win detection');
