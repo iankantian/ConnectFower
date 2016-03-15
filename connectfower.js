@@ -73,7 +73,7 @@ function takeTurn( color, inputArray ){
         console.log('game area is full');
     }
     displayPlayArea( inputArray );
-    checkWin( inputArray );
+    return checkWin( inputArray );
 }
 
 function checkWin( inputArray ) {
@@ -85,8 +85,6 @@ function checkWin( inputArray ) {
             // there are 8 directions a win can be garnered....
             cellToCheck = inputArray[i][j];
             if( cellToCheck == 0 ){
-
-
                 continue; // no need to check from this cell
             }
             else{
@@ -94,6 +92,7 @@ function checkWin( inputArray ) {
                     if( inputArray[i][j+1] == cellToCheck && inputArray[i][j+2] == cellToCheck && inputArray[i][j+3] == cellToCheck ){ // not possible to win right
                         console.log('right win detection', cellToCheck );
                         congratulate( cellToCheck );
+                        winCondition = cellToCheck;
                     }
                     else {
                         continue;
@@ -104,26 +103,30 @@ function checkWin( inputArray ) {
                     if( inputArray[i+1][j] == cellToCheck && inputArray[i+2][j] == cellToCheck && inputArray[i+3][j] == cellToCheck ){
                         console.log('down win detection', cellToCheck );
                         congratulate( cellToCheck );
+                        winCondition = cellToCheck;
                     }
                     else{
                         continue;
                     }
                 }
                 // downRight
-                else if( i < 3 || j < 4 ){
+                else if( i < 3 && j < 4 ){
                     if( inputArray[i+1][j+1] == cellToCheck && inputArray[i+2][j+2] == cellToCheck && inputArray[i+3][j+3] == cellToCheck ){
                         console.log('downRight win detection ', cellToCheck );
                         congratulate( cellToCheck );
+                        winCondition = cellToCheck;
                     }
                     else{
                         continue;
                     }
                 }
                 // downLeft
-                else if( i < 3 || j > 2){
+                else if( i < 3 && j > 2){
+                    //console.log('i and j are ', i, ', ', j);
                     if ( inputArray[i+1][j-1] == cellToCheck && inputArray[i+2][j-2] == cellToCheck && inputArray[i+3][j-3] == cellToCheck ){
                         console.log('down left win detection ', cellToCheck );
                         congratulate( cellToCheck );
+                        winCondition = cellToCheck;
                     }
                     else{
                         continue;
@@ -137,6 +140,7 @@ function checkWin( inputArray ) {
             // downLeft -- upRight will do these
         }
     }
+    return winCondition;
 }
 
 function congratulate( playerNumber ){
@@ -155,10 +159,16 @@ displayPlayArea(playArea);
 checkWin(playArea);
 
 function playGame(playArea){
+    var winState = 0;
     for( var i = 0; i < 21; i++){
-        if( winState !== true ){
-            takeTurn(black, playArea);
-            takeTurn(red, playArea);
+        if( winState == 0){
+            winState = takeTurn(black, playArea);
+        }
+        else{
+            break;
+        }
+        if( winState == 0) {
+            winState = takeTurn(red, playArea);
         }
         else{
             break;
